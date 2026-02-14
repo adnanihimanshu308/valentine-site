@@ -95,4 +95,73 @@ button {
     <h1>Will you be my Valentine, Veenal? ❤️</h1>
 
     <div class="buttons">
-        <button id="yes" on
+        <button id="yes" onclick="goToNext()">Yes 💖</button>
+        <button id="no">No 😢</button>
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+
+// Function to move NO button but keep it on screen
+function moveNoButton() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+
+    // Grow YES button slowly
+    let currentFontSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+    yesBtn.style.fontSize = (currentFontSize + 4) + "px";
+    yesBtn.style.padding = "20px 50px";
+}
+
+// Make NO run away when cursor gets close (not disappear)
+document.addEventListener("mousemove", (event) => {
+    const rect = noBtn.getBoundingClientRect();
+
+    const noCenterX = rect.left + rect.width / 2;
+    const noCenterY = rect.top + rect.height / 2;
+
+    const distance = Math.hypot(
+        event.clientX - noCenterX,
+        event.clientY - noCenterY
+    );
+
+    // If cursor comes within 150px, NO runs away
+    if (distance < 150) {
+        moveNoButton();
+    }
+});
+
+function goToNext() {
+    window.location.href = "download.html";
+}
+
+// Floating hearts generator
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random() * 30) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 8000);
+}
+
+setInterval(createHeart, 500);
+</script>
+
+</body>
+</html>
